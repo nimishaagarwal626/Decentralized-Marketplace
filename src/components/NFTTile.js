@@ -1,31 +1,28 @@
-import {
-    BrowserRouter as Router,
-    Link,
-  } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { GetIpfsUrlFromPinata } from "../utils";
 
-function NFTTile (data) {
-    const newTo = {
-        pathname:"/nftPage/"+data.data.tokenId
-    }
+function NFTTile({ data }) {
+  const { tokenId, name, description, image, price } = data;
 
-    console.log(data)
-    const IPFSUrl = GetIpfsUrlFromPinata(data.data.image);
-    console.log("IPFS", IPFSUrl)
+  const IPFSUrl = GetIpfsUrlFromPinata(image);
 
-    return (
-        <Link to={newTo}>
-        <div className="border-2 ml-12 mt-5 mb-12 flex flex-col items-center rounded-lg w-48 md:w-72 shadow-2xl">
-            <img src={IPFSUrl} alt="" className="w-72 h-80 rounded-lg object-cover" crossOrigin="anonymous"/>
-            <div className= "text-white w-full p-2 bg-gradient-to-t from-[#454545] to-transparent rounded-lg pt-5 -mt-20">
-                <strong className="text-xl">{data.data.name}</strong>
-                <p className="display-inline">
-                    {data.data.description}
-                </p>
-            </div>
+  return (
+    <Link to={`/nftPage/${tokenId}`}>
+      <div className="border-2 mx-4 my-6 flex flex-col items-center rounded-lg w-64 md:w-72 shadow-lg bg-gray-800 text-white">
+        <img
+          src={IPFSUrl}
+          alt={name}
+          className="w-full h-56 md:h-64 object-cover rounded-t-lg"
+        />
+        <div className="flex flex-col justify-between p-4 h-32">
+          <strong className="text-lg font-semibold">{name}</strong>
+          <p className="text-sm overflow-hidden">{description}</p>
+          <span>{price}</span>
         </div>
-        </Link>
-    )
+      </div>
+    </Link>
+  );
 }
 
 export default NFTTile;

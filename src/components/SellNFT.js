@@ -1,110 +1,160 @@
+import React, { useState } from "react";
+import { ethers } from "ethers";
 import Navbar from "./Navbar";
-import { useState } from "react";
+import Marketplace from "../Marketplace.json";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../pinata";
-import Marketplace from '../Marketplace.json';
-import { useLocation } from "react-router";
 
-export default function SellNFT () {
-    const [formParams, updateFormParams] = useState({ name: '', description: '', price: ''});
-    const [fileURL, setFileURL] = useState(null);
-    const ethers = require("ethers");
-    const [message, updateMessage] = useState('');
-    const location = useLocation();
+export default function SellNFT() {
+  const [formParams, setFormParams] = useState({
+    name: "",
+    description: "",
+    price: "",
+  });
+  const [fileURL, setFileURL] = useState(null);
+  const [message, setMessage] = useState("");
 
-    async function OnChangeFile(e) {
-        var file = e.target.files[0];
+  async function onChangeFile(e) {
+    const file = e.target.files[0];
+    try {
+      const response = await uploadFileToIPFS(file);
+      if (response.success) {
+        setFileURL(response.pinataURL);
+      }
+    } catch (error) {
+      console.error("Error during file upload", error);
+    }
+  }
 
-        try{
-            const response = await uploadFileToIPFS(file);
-            if(response.success === true){
-                console.log("Uploaded image to pinata:", response.pinataURL)
-                setFileURL(response.pinataURL)
-            }
-        }catch(e){
-            console.log("Error during file upload", e)
-        }
+  async function uploadMetadataToIPFS() {
+    const { name, description, price } = formParams;
+    if (!name || !description || !price || !fileURL) {
+      setMessage("Please fill out all fields and upload an image.");
+      return;
     }
 
-    async function uploadMetadataToIPFS(){
-        const {name, description, price} = formParams;
-        if(!name || !description || !price || !fileURL)
-            return;
+    const nftJSON = {
+      name,
+      description,
+      price,
+      Image: fileURL,
+    };
 
-        const nftJSON ={
-            name, description, price, Image:fileURL
-        };
-
-        try{
-            const response = await uploadJSONToIPFS(nftJSON);
-            if(response.success === true){
-                console.log("Uploaded Json to Pinata: ", response);
-                return response.pinataURL
-            }
-        }catch(e){
-            console.log("error uploading JSON:", e)
-        }
+    try {
+      const response = await uploadJSONToIPFS(nftJSON);
+      if (response.success) {
+        return response.pinataURL;
+      }
+    } catch (error) {
+      console.error("Error uploading JSON:", error);
     }
+  }
 
-    async function listNFT(e){
-        e.preventDefault();
+  async function listNFT(e) {
+    e.preventDefault();
+    setMessage("Please wait... Uploading NFT.");
 
-        try{
-            const metadataURL = await uploadMetadataToIPFS();
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
+    try {
+      const metadataURL = await uploadMetadataToIPFS();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        Marketplace.address,
+        Marketplace.abi,
+        signer
+      );
 
-            updateMessage("Please wait ... uploading");
+      const price = ethers.utils.parseUnits(formParams.price, "ether");
+      const listingPrice = await contract.getListPrice();
 
-            let contract = new ethers.Contract(Marketplace.address, Marketplace.abi, signer);
+      const transaction = await contract.createToken(metadataURL, price, {
+        value: listingPrice,
+      });
+      await transaction.wait();
 
-            const price = ethers.utils.parseUnits(formParams.price, 'ether')
-            let listingPrice = await contract.getListPrice();
-            listingPrice = listingPrice.toString();
-
-            console.log(listingPrice)
-            console.log(metadataURL)
-            let transaction = await contract.createToken(metadataURL, price, {value: listingPrice});
-            await transaction.wait();
-
-            console.log(transaction)
-            alert("Listed")
-            updateMessage("");
-            updateFormParams({name:'', description:'', price:''})
-            window.location.replace("/");
-        }catch(e){
-            alert("Upload error", e)
-        }
+      setMessage("NFT listed successfully!");
+      setFormParams({ name: "", description: "", price: "" });
+    } catch (error) {
+      console.error("Error listing NFT:", error);
+      setMessage("Failed to list NFT. Please try again.");
     }
+  }
 
-    return (
-        <div className="">
-        <Navbar></Navbar>
-        <div className="flex flex-col place-items-center mt-10" id="nftForm">
-            <form className="bg-white shadow-md rounded px-8 pt-4 pb-8 mb-4">
-            <h3 className="text-center font-bold text-purple-500 mb-8">Upload your NFT to the marketplace</h3>
-                <div className="mb-4">
-                    <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="name">NFT Name</label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Axie#4563" onChange={e => updateFormParams({...formParams, name: e.target.value})} value={formParams.name}></input>
-                </div>
-                <div className="mb-6">
-                    <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="description">NFT Description</label>
-                    <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" cols="40" rows="5" id="description" type="text" placeholder="Axie Infinity Collection" value={formParams.description} onChange={e => updateFormParams({...formParams, description: e.target.value})}></textarea>
-                </div>
-                <div className="mb-6">
-                    <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="price">Price (in ETH)</label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Min 0.01 ETH" step="0.01" value={formParams.price} onChange={e => updateFormParams({...formParams, price: e.target.value})}></input>
-                </div>
-                <div>
-                    <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="image">Upload Image (&lt;500 KB)</label>
-                    <input type={"file"} onChange={OnChangeFile}></input>
-                </div>
-                <br></br>
-                <div className="text-red-500 text-center">{message}</div>
-                <button onClick={listNFT} className="font-bold mt-10 w-full bg-purple-500 text-white rounded p-2 shadow-lg" id="list-button">
-                    List NFT
-                </button>
-            </form>
+  return (
+    <div className="min-h-screen text-white">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 flex items-center justify-center">
+        <div className="bg-[#151c25] shadow-xl rounded-xl w-11/12 md:w-2/5 p-6">
+          <h3 className="text-5xl font-bold text-[#e32970] mb-6 text-center">
+            Add NFT
+          </h3>
+          <form>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm text-[#e32970]">
+                NFT Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Enter NFT Name"
+                value={formParams.name}
+                onChange={(e) =>
+                  setFormParams({ ...formParams, name: e.target.value })
+                }
+                className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-sm text-[#e32970]">
+                Description
+              </label>
+              <textarea
+                id="description"
+                placeholder="Enter Description"
+                value={formParams.description}
+                onChange={(e) =>
+                  setFormParams({ ...formParams, description: e.target.value })
+                }
+                className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500"
+                rows="4"
+              ></textarea>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="price" className="block text-sm text-[#e32970]">
+                Price (ETH)
+              </label>
+              <input
+                type="number"
+                id="price"
+                placeholder="Enter Price (ETH)"
+                value={formParams.price}
+                onChange={(e) =>
+                  setFormParams({ ...formParams, price: e.target.value })
+                }
+                className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500"
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="file"
+                id="image"
+                accept="image/*"
+                onChange={onChangeFile}
+                className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500"
+              />
+            </div>
+            {message && (
+              <p className="text-red-500 text-sm mb-4">{message}</p>
+            )}
+            <button
+              type="submit"
+              onClick={listNFT}
+              className="w-full bg-[#e32970] hover:bg-[#bd255f] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring focus:ring-indigo-500"
+            >
+              List NFT
+            </button>
+          </form>
         </div>
-        </div>
-    )
+      </div>
+    </div>
+  );
 }
