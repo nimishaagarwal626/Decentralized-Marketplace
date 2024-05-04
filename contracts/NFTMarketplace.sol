@@ -67,8 +67,6 @@ contract NFTMarketplace is ERC721URIStorage {
 
     //The first time a token is created, it is listed here
     function createToken(string memory tokenURI, uint256 price) public payable returns (uint) {
-        require(msg.value == listPrice, "Send enought ether to list");
-        require(price>0, "Make sure price isn't negative");
         //Increment the tokenId counter, which is keeping track of the number of minted NFTs
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
@@ -177,8 +175,4 @@ contract NFTMarketplace is ERC721URIStorage {
         //Transfer the proceeds from the sale to the seller of the NFT
         payable(seller).transfer(msg.value);
     }
-
-    //We might add a resell token function in the future
-    //In that case, tokens won't be listed by default but users can send a request to actually list a token
-    //Currently NFTs are listed by default
 }
