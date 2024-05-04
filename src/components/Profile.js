@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import NFTTile from "./NFTTile";
 import MarketplaceJSON from "../Marketplace.json";
@@ -8,7 +7,6 @@ import axios from "axios";
 import { GetIpfsUrlFromPinata } from "../utils";
 
 function Profile() {
-  const { tokenId } = useParams();
   const [data, setData] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   const [address, setAddress] = useState("0x");

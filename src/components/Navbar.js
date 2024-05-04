@@ -14,7 +14,6 @@ function Navbar() {
 
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
         if (chainId !== '0xaa36a7') {
