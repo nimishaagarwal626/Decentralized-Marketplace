@@ -80,7 +80,7 @@ export default function SellNFT() {
   }
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen">
       <Navbar />
       <div className="container mx-auto px-4 py-8 flex items-center justify-center">
         <div className="bg-[#151c25] shadow-xl rounded-xl w-11/12 md:w-2/5 p-6">
@@ -108,6 +108,7 @@ export default function SellNFT() {
                 Description
               </label>
               <textarea
+                type="text"
                 id="description"
                 placeholder="Enter Description"
                 value={formParams.description}
@@ -115,7 +116,6 @@ export default function SellNFT() {
                   setFormParams({ ...formParams, description: e.target.value })
                 }
                 className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500"
-                rows="4"
               ></textarea>
             </div>
             <div className="mb-4">
@@ -139,7 +139,7 @@ export default function SellNFT() {
                 id="image"
                 accept="image/*"
                 onChange={onChangeFile}
-                className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500"
+                className="mt-1 p-2 w-full rounded border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500 text-white"
               />
             </div>
             {message && (
@@ -148,7 +148,7 @@ export default function SellNFT() {
             <button
               type="submit"
               onClick={listNFT}
-              className="w-full bg-[#e32970] hover:bg-[#bd255f] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring focus:ring-indigo-500"
+              className="w-full bg-[#e32970] hover:bg-[#bd255f] text-white font-bold py-2 px-4 rounded-full focus:outline-  none focus:ring focus:ring-indigo-500"
             >
               List NFT
             </button>
