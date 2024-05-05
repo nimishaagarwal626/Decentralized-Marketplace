@@ -41,11 +41,11 @@ export default function Marketplace() {
               image: meta.Image,
               name: meta.name,
               description: meta.description,
+              currentlyListed: i.currentlyListed
             };
             return item;
           })
         );
-        
         setData(items);
         setDataFetched(true);
       } catch (error) {

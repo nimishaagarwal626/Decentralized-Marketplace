@@ -16,7 +16,7 @@ contract NFTMarketplace is ERC721URIStorage {
     //owner is the contract address that created the smart contract
     address payable owner;
     //The fee charged by the marketplace to be allowed to list an NFT
-    uint256 listPrice = 0.01 ether;
+    uint256 listPrice = 0.001 ether;
 
     //The structure to store info about a listed token
     struct ListedToken {
@@ -161,7 +161,7 @@ contract NFTMarketplace is ERC721URIStorage {
         require(msg.value == price, "Please submit the asking price in order to complete the purchase");
 
         //update the details of the token
-        idToListedToken[tokenId].currentlyListed = true;
+        idToListedToken[tokenId].currentlyListed = false;
         idToListedToken[tokenId].seller = payable(msg.sender);
         _itemsSold.increment();
 
