@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import Marketplace from "../Marketplace.json";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../pinata";
 
-export default function SellNFT() {
+export default function ListNFT() {
   const [formParams, setFormParams] = useState({
     name: "",
     description: "",

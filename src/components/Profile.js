@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
-import NFTTile from "./NFTTile";
+import Cards from "./Cards";
 import MarketplaceJSON from "../Marketplace.json";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -91,7 +91,7 @@ function Profile() {
           <h2 className="text-2xl font-bold mb-4">Your NFTs</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {data.map((value, index) => (
-              <NFTTile data={value} key={index} />
+              <Cards data={value} key={index} />
             ))}
           </div>
           <div className="mt-8 text-xl">

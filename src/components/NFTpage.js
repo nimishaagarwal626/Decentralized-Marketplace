@@ -96,8 +96,6 @@ export default function NFTPage() {
           <div>Name: {data.name}</div>
           <div>Description: {data.description}</div>
           <div>Price: <span className="">{data.price} ETH</span></div>
-          <div>Owner: <span className="text-sm">{data.owner}</span></div>
-          <div>Seller: <span className="text-sm">{data.seller}</span></div>
           {currAddress !== data.owner && currAddress !== data.seller ? (
             <button
               className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
@@ -109,7 +107,7 @@ export default function NFTPage() {
             <div className="text-emerald-700">You are the owner of this NFT</div>
           )}
           <div className="text-green text-center mt-3">{message}</div>
-          {transactionId && ( // Display transaction ID if available
+          {transactionId && (
             <div className="text-white text-center mt-3">
               Transaction ID: {transactionId}
             </div>
@@ -119,4 +117,5 @@ export default function NFTPage() {
       </div>
     </div>
   );
+  
 }

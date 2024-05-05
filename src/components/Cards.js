@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { GetIpfsUrlFromPinata } from "../utils";
 
-function NFTTile({ data }) {
+function Cards({ data }) {
   const { tokenId, name, description, image, price, currentlyListed } = data;
 
   const IPFSUrl = GetIpfsUrlFromPinata(image);
@@ -33,4 +33,4 @@ function NFTTile({ data }) {
   );
 }
 
-export default NFTTile;
+export default Cards;

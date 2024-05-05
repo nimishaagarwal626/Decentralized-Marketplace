@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import NFTTile from "./NFTTile";
+import Cards from "./Cards";
 import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
 import { ethers } from "ethers";
@@ -71,7 +71,7 @@ export default function Marketplace() {
       <div className="flex flex-col place-items-center mt-20">
         <div className="flex mt-5 justify-between flex-wrap max-w-screen-xl text-center">
           {data.map((value, index) => (
-            <NFTTile data={value} key={index} />
+            <Cards data={value} key={index} />
           ))}
         </div>
       </div>

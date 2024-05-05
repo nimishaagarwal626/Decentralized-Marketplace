@@ -74,8 +74,8 @@ function Navbar() {
               <li className={location.pathname === "/" ? 'border-b-2 hover:pb-0 p-2' : 'hover:border-b-2 hover:pb-0 p-2'}>
                 <Link to="/">Marketplace</Link>
               </li>
-              <li className={location.pathname === "/sellNFT" ? 'border-b-2 hover:pb-0 p-2' : 'hover:border-b-2 hover:pb-0 p-2'}>
-                <Link to="/sellNFT">List My NFT</Link>
+              <li className={location.pathname === "/ListNFT" ? 'border-b-2 hover:pb-0 p-2' : 'hover:border-b-2 hover:pb-0 p-2'}>
+                <Link to="/ListNFT">List My NFT</Link>
               </li>
               <li className={location.pathname === "/profile" ? 'border-b-2 hover:pb-0 p-2' : 'hover:border-b-2 hover:pb-0 p-2'}>
                 <Link to="/profile">Profile</Link>
