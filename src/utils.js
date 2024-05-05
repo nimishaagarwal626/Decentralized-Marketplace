@@ -15,7 +15,7 @@ export const GetIpfsUrlFromPinata = (pinataUrl) => {
     const IPFSHash = IPFSUrlParts[IPFSUrlParts.length - 1];
 
     // Construct the IPFS URL using cf-ipfs.com gateway
-    const IPFSUrl = `https://dweb.link/ipfs/${IPFSHash}`;
+    const IPFSUrl = `https://cloudflare-ipfs.com/ipfs/${IPFSHash}`;
 
     return IPFSUrl;
 };
