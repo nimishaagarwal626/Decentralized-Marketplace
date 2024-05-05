@@ -12,6 +12,7 @@ export default function SellNFT() {
   });
   const [fileURL, setFileURL] = useState(null);
   const [message, setMessage] = useState("");
+  const [transactionHash, setTransactionHash] = useState("");
 
   async function onChangeFile(e) {
     const file = e.target.files[0];
@@ -37,6 +38,7 @@ export default function SellNFT() {
       description,
       price,
       Image: fileURL,
+      sold: false
     };
 
     try {
@@ -70,6 +72,7 @@ export default function SellNFT() {
         value: listingPrice,
       });
       await transaction.wait();
+      setTransactionHash(transaction.hash);
 
       setMessage("NFT listed successfully!");
       setFormParams({ name: "", description: "", price: "" });
@@ -144,6 +147,11 @@ export default function SellNFT() {
             </div>
             {message && (
               <p className="text-red-500 text-sm mb-4">{message}</p>
+            )}
+            {transactionHash && (
+              <p className="text-green-500 text-sm mb-4">
+                Transaction Hash: {transactionHash}
+              </p>
             )}
             <button
               type="submit"

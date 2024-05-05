@@ -13,6 +13,7 @@ export default function NFTPage() {
   const [message, setMessage] = useState("");
   const [currAddress, setCurrAddress] = useState("0x");
   const [error, setError] = useState(null);
+  const [transactionId, setTransactionId] = useState(null);
 
   useEffect(() => {
     async function getNFTData(tokenId) {
@@ -76,7 +77,8 @@ export default function NFTPage() {
         value: salePrice,
       });
       await transaction.wait();
-
+      const txHash = transaction.hash;
+      setTransactionId(txHash);
       alert("You successfully bought the NFT!");
       setMessage("");
     } catch (error) {
@@ -107,6 +109,11 @@ export default function NFTPage() {
             <div className="text-emerald-700">You are the owner of this NFT</div>
           )}
           <div className="text-green text-center mt-3">{message}</div>
+          {transactionId && ( // Display transaction ID if available
+            <div className="text-white text-center mt-3">
+              Transaction ID: {transactionId}
+            </div>
+          )}
           {error && <div className="text-red-500 text-center mt-3">{error}</div>}
         </div>
       </div>
