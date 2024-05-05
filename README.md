@@ -1,7 +1,9 @@
-# DECENTRALIZED-MARKETPLACE
+<img width="1434" alt="Screenshot 2024-05-05 at 6 39 04 PM" src="https://github.com/nimishaagarwal626/Decentralized-Marketplace/assets/114453254/771efe6d-64e8-444f-8fc0-e8016582176b"># DECENTRALIZED-MARKETPLACE
 Welcome to the decentralized NFT marketplace built on the Ethereum blockchain using Solidity. This marketplace allows users to list and purchase non-fungible tokens (NFTs) securely and transparently. The smart contract powering this marketplace is deployed on the Sepolia testnet network, and transactions are executed using the MetaMask wallet. On executio of buy and sell transaction, transaction id can be obtained and verified in sepolia.etherscan.io
 
 # Website Link: https://decmarketplace.netlify.app/
+<img width="1434" alt="Screenshot 2024-05-05 at 6 39 18 PM" src="https://github.com/nimishaagarwal626/Decentralized-Marketplace/assets/114453254/bce6e991-814a-4e20-9f77-043359ab31e9">
+
 
 ## Techstack used:
 - Frontend: React JS, Tailwind CSS
