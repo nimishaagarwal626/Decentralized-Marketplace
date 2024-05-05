@@ -52,8 +52,8 @@ export const uploadFileToIPFS = async(file) => {
         customPinPolicy: {
             regions: [
                 {
-                    id: 'FRA1',
-                    desiredReplicationCount: 1
+                    id: 'EU',
+                    desiredReplicationCount: 2
                 },
                 {
                     id: 'NYC1',
