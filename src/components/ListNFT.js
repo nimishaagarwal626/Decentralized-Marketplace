@@ -146,20 +146,23 @@ export default function ListNFT() {
               />
             </div>
             {message && (
-              <p className="text-red-500 text-sm mb-4">{message}</p>
-            )}
-            {transactionHash && (
-              <p className="text-green-500 text-sm mb-4">
-                Transaction Hash: {transactionHash}
-              </p>
-            )}
-            <button
-              type="submit"
-              onClick={listNFT}
-              className="w-full bg-[#e32970] hover:bg-[#bd255f] text-white font-bold py-2 px-4 rounded-full focus:outline-  none focus:ring focus:ring-indigo-500"
-            >
-              List NFT
-            </button>
+                <p className="text-red-500 text-sm mb-4">{message}</p>
+              )}
+
+              {transactionHash ? (
+                <p className="text-green-500 text-sm mb-4">
+                  Transaction Hash: {transactionHash}
+                </p>
+              ) : (
+                <button
+                  type="submit"
+                  onClick={listNFT}
+                  disabled={!!transactionHash} // Disable the button if transactionHash is truthy
+                  className="w-full bg-[#e32970] hover:bg-[#bd255f] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring focus:ring-indigo-500"
+                >
+                  List NFT
+                </button>
+              )}
           </form>
         </div>
       </div>

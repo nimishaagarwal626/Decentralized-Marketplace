@@ -10,7 +10,6 @@ function Profile() {
   const [data, setData] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   const [address, setAddress] = useState("0x");
-  const [totalPrice, setTotalPrice] = useState("0");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -53,11 +52,6 @@ function Profile() {
         setData(items);
         setDataFetched(true);
 
-        const sumPrice = items.reduce((total, item) => {
-          return total + parseFloat(item.price);
-        }, 0);
-
-        setTotalPrice(sumPrice.toFixed(3));
       } catch (error) {
         console.error("Error fetching NFT data:", error);
         setError("Error fetching NFT data. Please try again later.");
@@ -81,10 +75,6 @@ function Profile() {
           <div>
             <h2 className="text-2xl font-bold">No. of NFTs</h2>
             <p>{data.length}</p>
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold">Total Value</h2>
-            <p>{totalPrice} ETH</p>
           </div>
         </div>
         <div className="text-center">
